@@ -8,7 +8,7 @@
         :root { --primary-blue: #00d4ff; --emergency-red: #ff3e3e; --warning-gold: #ffcc00; --success-green: #27ae60; --bg-dark: #0f0f0f; }
         
         /* Fixed UI for 100% Zoom Auto-Fit - Maximized Interface */
-        body { display: flex; justify-content: center; align-items: center; height: 100dvh; margin: 0; background: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow: hidden; touch-action: none; }
+        body { display: flex; justify-content: center; align-items: center; height: 100dvh; margin: 0; background: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow: hidden; touch-action: none; user-select: none; }
         .container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 520px; height: 100dvh; padding: 75px 0 20px 0; box-sizing: border-box; }
         
         canvas { background: #1a1a1a; border: 3px solid #333; border-radius: 16px; box-shadow: 0 0 40px rgba(0,212,255,0.15); width: 96%; max-height: calc(100dvh - 120px); height: 100%; aspect-ratio: 360 / 580; object-fit: contain; display: block; }
@@ -136,6 +136,9 @@
 </div>
 
 <script>
+    // Prevent right-clicking and long-pressing globally for the entire session
+    window.addEventListener('contextmenu', (e) => e.preventDefault());
+
     const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRfU0TSbaFOFzD_TNDaoHm_4xyxhl4YkaNLtTHd40t4rMlzbYxnxmwbOFgd1mQMurxFu5kerZT7ufM8/pub?gid=0&single=true&output=csv";
 
     const canvas = document.getElementById('game'), ctx = canvas.getContext('2d');

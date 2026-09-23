@@ -5,39 +5,215 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>AMBO - Automated Module-Based Outcome</title>
     <style>
-        :root { --primary-blue: #00d4ff; --emergency-red: #ff3e3e; --warning-gold: #ffcc00; --success-green: #27ae60; --bg-dark: #0f0f0f; }
+        :root { 
+            --primary-blue: #00d4ff; 
+            --emergency-red: #ff3e3e; 
+            --warning-gold: #ffcc00; 
+            --success-green: #27ae60; 
+            --bg-dark: #0f0f0f; 
+        }
         
         /* Fixed UI for 100% Zoom Auto-Fit - Maximized Interface */
-        body { display: flex; justify-content: center; align-items: center; height: 100dvh; margin: 0; background: var(--bg-dark); font-family: 'Segoe UI', sans-serif; color: white; overflow: hidden; touch-action: none; user-select: none; }
-        .container { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 520px; height: 100dvh; padding: 75px 0 20px 0; box-sizing: border-box; }
+        body { 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100dvh; 
+            margin: 0; 
+            background: var(--bg-dark); 
+            font-family: 'Segoe UI', sans-serif; 
+            color: white; 
+            overflow: hidden; 
+            touch-action: none; 
+            user-select: none; 
+        }
         
-        canvas { background: #1a1a1a; border: 3px solid #333; border-radius: 16px; box-shadow: 0 0 40px rgba(0,212,255,0.15); width: 96%; max-height: calc(100dvh - 120px); height: 100%; aspect-ratio: 360 / 580; object-fit: contain; display: block; }
+        .container { 
+            position: relative; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            width: 100%; 
+            max-width: 520px; 
+            height: 100dvh; 
+            padding: 75px 0 20px 0; 
+            box-sizing: border-box; 
+        }
         
-        .hud-header-tag { position: absolute; top: 15px; left: 2%; right: 2%; display: flex; justify-content: space-between; align-items: center; font-size: 14px; background: rgba(30, 30, 30, 0.9); padding: 12px 18px; border-radius: 8px; border: 1px solid #444; z-index: 50; }
-        .stats-bar { width: 96%; display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 16px; font-weight: bold; }
-        .stat-red { color: var(--emergency-red); } .stat-blue { color: var(--primary-blue); }
+        canvas { 
+            background: #1a1a1a; 
+            border: 3px solid #333; 
+            border-radius: 16px; 
+            box-shadow: 0 0 40px rgba(0,212,255,0.15); 
+            width: 96%; 
+            max-height: calc(100dvh - 120px); 
+            height: 100%; 
+            aspect-ratio: 360 / 580; 
+            object-fit: contain; 
+            display: block; 
+        }
         
-        #mainOverlay { position: absolute; top: 90px; left: 2%; right: 2%; bottom: 35px; background: rgba(10, 10, 10, 0.96); border: 2px solid var(--primary-blue); border-radius: 20px; display: flex; flex-direction: column; padding: 25px; z-index: 100; backdrop-filter: blur(8px); overflow-y: auto; }
+        .hud-header-tag { 
+            position: absolute; 
+            top: 15px; 
+            left: 2%; 
+            right: 2%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            font-size: 14px; 
+            background: rgba(30, 30, 30, 0.9); 
+            padding: 12px 18px; 
+            border-radius: 8px; 
+            border: 1px solid #444; 
+            z-index: 50; 
+        }
         
-        .story-header { font-size: 24px; color: var(--emergency-red); font-weight: 900; text-align: center; margin-bottom: 15px; text-transform: uppercase; }
-        .story-text { font-size: 16px; color: #eee; margin-bottom: 20px; line-height: 1.6; text-align: center; background: rgba(255,255,255,0.05); padding: 20px; border-radius: 12px; border-left: 4px solid var(--primary-blue); min-height: 80px; }
-        .option-btn { background: #252525; text-align: left; margin-bottom: 12px; padding: 16px; border-radius: 10px; font-size: 15px; border: 1px solid #444; width: 100%; color: white; cursor: pointer; transition: background 0.2s; line-height: 1.4; }
-        .option-btn:hover { background: #333; }
-        .option-btn.disabled { opacity: 0.5; cursor: not-allowed; background: #151515; }
-        #feedbackMsg { font-weight: bold; text-align: center; margin-bottom: 15px; font-size: 18px; display: none; padding: 10px; border-radius: 8px; }
-        .correct { color: var(--success-green); background: rgba(39, 174, 96, 0.1); }
-        .wrong { color: var(--emergency-red); background: rgba(255, 62, 62, 0.1); }
+        .stats-bar { 
+            width: 96%; 
+            display: flex; 
+            justify-content: space-between; 
+            margin-bottom: 12px; 
+            font-size: 16px; 
+            font-weight: bold; 
+        }
+        
+        .stat-red { color: var(--emergency-red); } 
+        .stat-blue { color: var(--primary-blue); }
+        
+        /* Overlay Layout Updates for Desktop Readability */
+        #mainOverlay { 
+            position: absolute; 
+            top: 90px; 
+            left: 2%; 
+            right: 2%; 
+            bottom: 35px; 
+            background: rgba(10, 10, 10, 0.96); 
+            border: 2px solid var(--primary-blue); 
+            border-radius: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            padding: 20px; 
+            z-index: 100; 
+            backdrop-filter: blur(8px); 
+            overflow-y: auto; 
+            box-sizing: border-box;
+        }
+        
+        .story-header { 
+            font-size: 24px; 
+            color: var(--emergency-red); 
+            font-weight: 900; 
+            text-align: center; 
+            margin-bottom: 15px; 
+            text-transform: uppercase; 
+        }
+        
+        .story-text { 
+            font-size: 16px; 
+            color: #eee; 
+            margin-bottom: 20px; 
+            line-height: 1.6; 
+            text-align: center; 
+            background: rgba(255,255,255,0.05); 
+            padding: 20px; 
+            border-radius: 12px; 
+            border-left: 4px solid var(--primary-blue); 
+            min-height: 80px; 
+        }
+        
+        .option-btn { 
+            background: #252525; 
+            text-align: left; 
+            margin-bottom: 10px; 
+            padding: 14px 16px; 
+            border-radius: 10px; 
+            font-size: 15px; 
+            border: 1px solid #444; 
+            width: 100%; 
+            color: white; 
+            cursor: pointer; 
+            transition: background 0.2s, border-color 0.2s; 
+            line-height: 1.4; 
+            box-sizing: border-box;
+        }
+        
+        .option-btn:hover { 
+            background: #333; 
+            border-color: var(--primary-blue);
+        }
+        
+        .option-btn.disabled { 
+            opacity: 0.5; 
+            cursor: not-allowed; 
+            background: #151515; 
+        }
+        
+        #feedbackMsg { 
+            font-weight: bold; 
+            text-align: center; 
+            margin-bottom: 12px; 
+            font-size: 16px; 
+            display: none; 
+            padding: 10px; 
+            border-radius: 8px; 
+            flex-shrink: 0;
+        }
+        
+        .correct { color: var(--success-green); background: rgba(39, 174, 96, 0.15); border: 1px solid var(--success-green); }
+        .wrong { color: var(--emergency-red); background: rgba(255, 62, 62, 0.15); border: 1px solid var(--emergency-red); }
+        
+        /* Dedicated Scroll Container for Long Questions */
+        #qText {
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            line-height: 1.5;
+            max-height: 28vh;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            flex-shrink: 0;
+        }
+        
+        /* Custom Scrollbars for PC */
+        #qText::-webkit-scrollbar,
+        #optionsContainer::-webkit-scrollbar,
+        #mainOverlay::-webkit-scrollbar {
+            width: 6px;
+        }
+        #qText::-webkit-scrollbar-thumb,
+        #optionsContainer::-webkit-scrollbar-thumb,
+        #mainOverlay::-webkit-scrollbar-thumb {
+            background: var(--primary-blue);
+            border-radius: 4px;
+        }
+        
+        #optionsContainer {
+            overflow-y: auto;
+            flex: 1;
+            max-height: 35vh;
+            padding-right: 4px;
+        }
+
         .form-group { margin-bottom: 16px; text-align: left; width: 100%; }
         .form-group label { display: block; font-size: 13px; font-weight: bold; color: var(--primary-blue); margin-bottom: 8px; text-transform: uppercase; }
         .form-group input, .form-group select { width: 100%; padding: 16px; border-radius: 8px; border: 1px solid #444; background: #111; color: white; box-sizing: border-box; font-size: 16px; }
+        
         .ambo-avatar { width: 60px; height: 90px; margin: 0 auto 20px; position: relative; background: #fff; border-radius: 6px; border: 2px solid #ccc; flex-shrink: 0; }
         .ambo-avatar::after { content: ''; position: absolute; top: 40px; left: 0; width: 100%; height: 14px; background: var(--emergency-red); }
         .siren-light { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); width: 40px; height: 10px; border-radius: 5px; animation: flickerSiren 0.3s infinite alternate; }
         @keyframes flickerSiren { 0% { background: var(--emergency-red); box-shadow: 0 0 15px var(--emergency-red); } 100% { background: var(--primary-blue); box-shadow: 0 0 15px var(--primary-blue); } }
+        
         .progress-container { width: 96%; height: 12px; background: #222; border-radius: 10px; margin-top: 15px; border: 1px solid #333; overflow: hidden; flex-shrink: 0; }
         #progressBar { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-blue), #00ff88); transition: width 0.4s ease; }
-        .game-btn { padding: 18px 24px; border: none; border-radius: 10px; font-weight: bold; font-size: 16px; cursor: pointer; color: white; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-green { background: var(--success-green); width: 100%; margin-top: 15px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        
+        .game-btn { padding: 16px 20px; border: none; border-radius: 10px; font-weight: bold; font-size: 15px; cursor: pointer; color: white; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-green { background: var(--success-green); width: 100%; margin-top: 10px; box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3); }
+        
         .result-data-box { background: rgba(255,255,255,0.05); border: 1px solid #333; border-radius: 12px; padding: 20px; margin: 20px 0; width: 90%; }
         .spinner { border: 4px solid rgba(255,255,255,0.1); width: 50px; height: 50px; border-radius: 50%; border-left-color: var(--primary-blue); animation: spin 1s linear infinite; margin-bottom: 20px; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
@@ -45,6 +221,13 @@
         
         .audio-toggle-btn { position: absolute; top: -1px; right: 8px; background: transparent; border: none; border-radius: 8px; color: var(--primary-blue); font-size: 20px; font-weight: bold; padding: 4px; cursor: pointer; z-index: 200; display: flex; align-items: center; justify-content: center; }
         .audio-toggle-btn:hover { opacity: 0.8; }
+
+        /* Desktop View Adjustments */
+        @media (min-width: 600px) {
+            #qText { font-size: 17px; }
+            .option-btn { font-size: 15px; padding: 16px; }
+            #mainOverlay { padding: 25px; }
+        }
     </style>
 </head>
 <body>
@@ -76,7 +259,6 @@
             <div class="form-group">
                 <label>Training Module</label>
                 <select id="trainingModule">
-                    <option value="sample_questions">Sample Questions</option>
                     <option value="acute_care">Acute Care</option>
                     <option value="acute_surgical">Acute/Surgical Care</option>
                     <option value="emergency">Emergency Care</option>
@@ -99,11 +281,11 @@
             <button id="storyBtn" class="game-btn btn-green" onclick="nextStory()">CONTINUE</button>
         </div>
         
-        <div id="screenQuiz" style="display: none; flex-direction: column; justify-content: center; height: 100%;">
+        <div id="screenQuiz" style="display: none; flex-direction: column; justify-content: space-between; height: 100%; box-sizing: border-box;">
             <div id="feedbackMsg"></div>
-            <div id="qText" style="font-size: 18px; margin-bottom: 15px; font-weight: bold; line-height: 1.5;"></div>
-            <div id="optionsContainer" style="overflow-y: auto; max-height: 60vh;"></div>
-            <button id="quizNextBtn" class="game-btn btn-green" style="display: none; margin-top: 15px; flex-shrink:0;" onclick="advanceQuizSequence()">CONTINUE TO NEXT QUESTION</button>
+            <div id="qText"></div>
+            <div id="optionsContainer"></div>
+            <button id="quizNextBtn" class="game-btn btn-green" style="display: none; margin-top: 10px; flex-shrink: 0;" onclick="advanceQuizSequence()">CONTINUE TO NEXT QUESTION</button>
         </div>
         
         <div id="screenLoading" style="display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">

@@ -29,7 +29,7 @@
             user-select: none; 
         }
         
-        /* EXPANDED CONTAINER WIDTH FOR DESKTOP (UP TO 720px) */
+        /* WIDER GAME CONTAINER FOR DESKTOP READABILITY */
         .container { 
             position: relative; 
             display: flex; 
@@ -37,12 +37,11 @@
             align-items: center; 
             justify-content: center; 
             width: 100%; 
-            max-width: 720px; 
+            max-width: 680px; 
             height: 100dvh; 
-            padding: 70px 10px 15px 10px; 
+            padding: 70px 12px 15px 12px; 
         }
         
-        /* Canvas expands horizontally while maintaining proportions */
         canvas { 
             background: #1a1a1a; 
             border: 3px solid #333; 
@@ -51,6 +50,7 @@
             width: 100%; 
             max-height: calc(100dvh - 120px); 
             height: 100%; 
+            aspect-ratio: 600 / 580; 
             object-fit: contain; 
             display: block; 
         }
@@ -58,8 +58,8 @@
         .hud-header-tag { 
             position: absolute; 
             top: 15px; 
-            left: 10px; 
-            right: 10px; 
+            left: 12px; 
+            right: 12px; 
             display: flex; 
             justify-content: space-between; 
             align-items: center; 
@@ -83,19 +83,19 @@
         .stat-red { color: var(--emergency-red); } 
         .stat-blue { color: var(--primary-blue); }
         
-        /* EXPANDED OVERLAY - NO SCROLLBARS */
+        /* WIDER OVERLAY PANEL - PREVENTS VERTICAL SCROLLBARS */
         #mainOverlay { 
             position: absolute; 
             top: 85px; 
-            left: 10px; 
-            right: 10px; 
+            left: 12px; 
+            right: 12px; 
             bottom: 30px; 
             background: rgba(10, 10, 10, 0.96); 
             border: 2px solid var(--primary-blue); 
             border-radius: 20px; 
             display: flex; 
             flex-direction: column; 
-            padding: 20px 25px; 
+            padding: 22px 28px; 
             z-index: 100; 
             backdrop-filter: blur(8px); 
             overflow: hidden; 
@@ -123,7 +123,7 @@
             min-height: 80px; 
         }
         
-        /* Dynamic Button Layout utilizing wider screen width */
+        /* WIDE BUTTONS WITH FULL HORIZONTAL SPAN */
         .option-btn { 
             background: #252525; 
             text-align: left; 
@@ -167,7 +167,7 @@
         .correct { color: var(--success-green); background: rgba(39, 174, 96, 0.15); border: 1px solid var(--success-green); }
         .wrong { color: var(--emergency-red); background: rgba(255, 62, 62, 0.15); border: 1px solid var(--emergency-red); }
         
-        /* EXPANDED WIDE QUESTION TEXT BOX */
+        /* WIDE QUESTION TEXT AREA */
         #qText {
             font-size: 16px;
             margin-bottom: 12px;
@@ -214,16 +214,16 @@
         .audio-toggle-btn { position: absolute; top: -1px; right: 8px; background: transparent; border: none; border-radius: 8px; color: var(--primary-blue); font-size: 20px; font-weight: bold; padding: 4px; cursor: pointer; z-index: 200; display: flex; align-items: center; justify-content: center; }
         .audio-toggle-btn:hover { opacity: 0.8; }
 
-        /* POP-UP MODAL WINDOW STYLES */
+        /* CUSTOM POP-UP MODAL STYLES */
         #customModalOverlay {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.85);
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 999;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(6px);
         }
         .modal-box {
             background: #181820;
@@ -231,7 +231,7 @@
             border-radius: 16px;
             padding: 25px 30px;
             width: 90%;
-            max-width: 400px;
+            max-width: 420px;
             text-align: center;
             box-shadow: 0 0 30px rgba(0,212,255,0.3);
             animation: popIn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -240,9 +240,9 @@
             0% { transform: scale(0.7); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .modal-icon { font-size: 40px; margin-bottom: 10px; }
-        .modal-title { font-size: 20px; font-weight: bold; color: var(--primary-blue); margin-bottom: 8px; }
-        .modal-body { font-size: 14px; color: #ddd; margin-bottom: 20px; line-height: 1.4; }
+        .modal-icon { font-size: 42px; margin-bottom: 10px; }
+        .modal-title { font-size: 22px; font-weight: bold; color: var(--primary-blue); margin-bottom: 8px; }
+        .modal-body { font-size: 15px; color: #ddd; margin-bottom: 20px; line-height: 1.4; }
     </style>
 </head>
 <body>
@@ -338,7 +338,7 @@
     <div class="modal-box">
         <div class="modal-icon">📋</div>
         <div class="modal-title">CODE COPIED</div>
-        <div class="modal-body">Sync code successfully copied to clipboard. Click below to continue to the form.</div>
+        <div class="modal-body">Sync code successfully copied to clipboard. Click below to proceed to the form.</div>
         <button class="game-btn btn-green" onclick="closePopUpModal()">OK, UNDERSTOOD</button>
     </div>
 </div>
@@ -494,7 +494,7 @@
         return stories[dist] || `"Target distance reached! The AMBO backup system needs a quick data sync to keep everything running smoothly. Focus up, Pilot!"`;
     }
 
-    /* Ambulance Centered on Expanded Canvas Width */
+    /* Ambulance Centered on Expanded Canvas */
     const ambulance = { x: 282, y: 480, w: 36, h: 70, speed: 8 };
     let traffic = []; const keys = {};
     window.addEventListener('keydown', e => keys[e.code] = true);
@@ -702,6 +702,8 @@
                 genBtn.style.display = 'none';
                 document.getElementById('codeDisplayArea').style.display = 'block';
                 document.getElementById('syncCodeInput').value = uniqueCode;
+                // Ensure form button remains hidden until copy is performed
+                document.getElementById('proceedFormBtn').style.display = 'none';
             })
             .catch(error => {
                 console.error('Error syncing:', error);
@@ -711,15 +713,15 @@
             });
     }
 
-    /* COPY FUNCTION WITH POP-UP MODAL & FORM UNLOCK */
+    /* COPY FUNCTION WITH POP-UP MODAL & FORM BUTTON UNLOCK */
     function copyCode() {
         const copyText = document.getElementById("syncCodeInput");
         copyText.select();
         copyText.setSelectionRange(0, 99999); 
         navigator.clipboard.writeText(copyText.value).then(() => {
-            // Show pop-up window
+            // Display custom modal window (no browser alert)
             document.getElementById('customModalOverlay').style.display = 'flex';
-            // Reveal the form button only after copy
+            // Unhide the Proceed to Form button
             document.getElementById('proceedFormBtn').style.display = 'block';
         });
     }
